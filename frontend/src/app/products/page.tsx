@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { FiFilter, FiGrid, FiList, FiChevronDown, FiX } from 'react-icons/fi';
 import { productsApi, categoriesApi } from '@/lib/api';
@@ -14,7 +14,7 @@ const SORT_OPTIONS = [
   { value: 'price_desc',label: 'السعر: من الأعلى' },
 ];
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -274,5 +274,31 @@ export default function ProductsPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="container-main py-8">
+        <div className="skeleton h-8 w-64 rounded mb-6" />
+        <div className="flex gap-6">
+          <div className="hidden lg:block w-64 shrink-0">
+            <div className="skeleton h-96 rounded-2xl" />
+          </div>
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-4">
+            {Array(6).fill(0).map((_, i) => (
+              <div key={i} className="card p-3 space-y-3">
+                <div className="skeleton aspect-square rounded-lg" />
+                <div className="skeleton h-4 w-3/4 rounded" />
+                <div className="skeleton h-9 rounded-lg" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
@@ -9,7 +9,7 @@ import { useAuthStore } from '@/lib/store';
 import { toast } from 'react-hot-toast';
 import Cookies from 'js-cookie';
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/';
@@ -105,5 +105,21 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[calc(100vh-200px)] flex items-center justify-center">
+        <div className="w-full max-w-md space-y-4 px-4">
+          <div className="skeleton h-14 w-14 rounded-2xl mx-auto" />
+          <div className="skeleton h-8 w-48 rounded mx-auto" />
+          <div className="skeleton h-64 rounded-2xl" />
+        </div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }
