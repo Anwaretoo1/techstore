@@ -11,7 +11,8 @@ export async function query(text: string, params: unknown[] = []) {
   const client = await pool.connect();
   try {
     const result = await client.query(text, params);
-    return { rows: result.rows, rowCount: result.rowCount ?? result.rows.length };
+    const rows = result.rows ?? [];
+    return { rows, rowCount: result.rowCount ?? rows.length };
   } finally {
     client.release();
   }
@@ -22,7 +23,8 @@ export async function getClient() {
   return {
     query: async (text: string, params: unknown[] = []) => {
       const result = await client.query(text, params);
-      return { rows: result.rows, rowCount: result.rowCount ?? result.rows.length };
+      const rows = result.rows ?? [];
+      return { rows, rowCount: result.rowCount ?? rows.length };
     },
     release: () => client.release(),
   };
