@@ -36,7 +36,7 @@ export const productsApi = {
   create: (data: unknown) => api.post('/products', data),
   update: (id: number, data: unknown) => api.put(`/products/${id}`, data),
   delete: (id: number) => api.delete(`/products/${id}`),
-  search: (q: string) => api.get('/products/search', { params: { q } }),
+  search: (q: string) => api.get('/products', { params: { search: q } }),
 };
 
 // ─── Categories ──────────────────────────────────────────────────────────────
