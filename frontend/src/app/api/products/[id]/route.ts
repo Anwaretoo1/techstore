@@ -61,6 +61,17 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         [params.id, spec.key, spec.key_ar, spec.value, spec.value_ar, i]
       );
     }
+    const parsedImages = typeof body.images === 'string' ? JSON.parse(body.images) : (body.images || []);
+    await query('DELETE FROM product_images WHERE product_id = $1', [params.id]);
+    for (let i = 0; i < parsedImages.length; i++) {
+      const img = parsedImages[i];
+      if (img.url) {
+        await query(
+          'INSERT INTO product_images (product_id, url, alt, is_primary, sort_order) VALUES ($1,$2,$3,$4,$5)',
+          [params.id, img.url, img.alt || '', i === 0, i]
+        );
+      }
+    }
     return NextResponse.json({ success: true, message: 'تم تحديث المنتج بنجاح' });
   } catch (err: unknown) {
     const e = err as { status?: number; message?: string };
