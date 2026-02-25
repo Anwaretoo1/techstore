@@ -37,9 +37,9 @@ async function getAll(req, res) {
       params.push(brand);
     }
     if (search) {
-      conditions.push(`(p.name LIKE $${idx} OR p.name_ar LIKE $${idx} OR p.description_ar LIKE $${idx})`);
-      params.push(`%${search}%`);
-      idx++;
+      conditions.push(`(p.name LIKE $${idx++} OR p.name_ar LIKE $${idx++} OR p.description_ar LIKE $${idx++})`);
+      const sv = `%${search}%`;
+      params.push(sv, sv, sv);
     }
     if (minPrice) {
       conditions.push(`COALESCE(p.sale_price, p.price) >= $${idx++}`);
