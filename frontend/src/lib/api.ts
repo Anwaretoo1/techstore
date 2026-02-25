@@ -1,7 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// Use internal Next.js API routes — works in both dev and production on Vercel
+const API_URL = '/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -32,10 +33,8 @@ export const productsApi = {
   getAll: (params?: Record<string, unknown>) => api.get('/products', { params }),
   getById: (id: number) => api.get(`/products/${id}`),
   getFeatured: () => api.get('/products/featured'),
-  create: (data: FormData) =>
-    api.post('/products', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  update: (id: number, data: FormData) =>
-    api.put(`/products/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  create: (data: unknown) => api.post('/products', data),
+  update: (id: number, data: unknown) => api.put(`/products/${id}`, data),
   delete: (id: number) => api.delete(`/products/${id}`),
   search: (q: string) => api.get('/products/search', { params: { q } }),
 };
