@@ -88,15 +88,18 @@ export default function ProductDetailPage() {
         {/* Images */}
         <div>
           {/* Main Image */}
-          <div className="relative aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-3 flex items-center justify-center">
+          <div className="relative aspect-square mb-3">
+            {/* overflow-visible so zoom panel can appear outside */}
             {product.images && product.images[selectedImage] ? (
-              <ImageMagnifier
-                src={product.images[selectedImage].url}
-                alt={product.images[selectedImage].alt || product.name_ar}
-                zoom={5}
-              />
+              <div className="w-full h-full bg-slate-50 rounded-2xl">
+                <ImageMagnifier
+                  src={product.images[selectedImage].url}
+                  alt={product.images[selectedImage].alt || product.name_ar}
+                  zoom={5}
+                />
+              </div>
             ) : (
-              <div className="flex items-center justify-center h-full text-slate-300 text-5xl">📦</div>
+              <div className="w-full h-full bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 text-5xl">📦</div>
             )}
             {hasDiscount && (
               <div className="absolute top-4 right-4 pointer-events-none z-10">
