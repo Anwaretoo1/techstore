@@ -16,7 +16,7 @@ export default function CartPage() {
   const [couponLoading, setCouponLoading] = useState(false);
 
   const subtotal = total();
-  const shipping = subtotal > 500000 ? 0 : 25000;
+  const shipping = subtotal > 500 ? 0 : 25;
   const finalTotal = subtotal - discount + shipping;
 
   const applyCoUpon = async () => {
@@ -144,7 +144,7 @@ export default function CartPage() {
                 <p className="text-xs text-green-600">🎉 حصلت على شحن مجاني!</p>
               )}
               {shipping > 0 && (
-                <p className="text-xs text-slate-500">*شحن مجاني للطلبات فوق 500,000 ل.س</p>
+                <p className="text-xs text-slate-500">*شحن مجاني للطلبات فوق 500 $</p>
               )}
 
               <div className="border-t border-slate-200 pt-3 flex justify-between font-bold text-slate-900">

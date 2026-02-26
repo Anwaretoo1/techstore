@@ -11,6 +11,8 @@ import { formatPrice, calcDiscount } from '@/lib/utils';
 import { toast } from 'react-hot-toast';
 import type { Product } from '@/types';
 import ProductCard from '@/components/product/ProductCard';
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -88,20 +90,20 @@ export default function ProductDetailPage() {
         {/* Images */}
         <div>
           {/* Main Image */}
-          <div className="relative aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-3">
+          <div className="relative aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-3 flex items-center justify-center">
             {product.images[selectedImage] ? (
-              <Image
-                src={product.images[selectedImage].url}
-                alt={product.images[selectedImage].alt || product.name_ar}
-                fill
-                className="object-contain p-6"
-                priority
-              />
+              <Zoom>
+                <img
+                  src={product.images[selectedImage].url}
+                  alt={product.images[selectedImage].alt || product.name_ar}
+                  className="object-contain p-6 w-full h-full max-h-[500px]"
+                />
+              </Zoom>
             ) : (
               <div className="flex items-center justify-center h-full text-slate-300 text-5xl">📦</div>
             )}
             {hasDiscount && (
-              <div className="absolute top-4 right-4">
+              <div className="absolute top-4 right-4 pointer-events-none">
                 <span className="price-sale-badge text-sm px-3 py-1">{discount}% خصم</span>
               </div>
             )}

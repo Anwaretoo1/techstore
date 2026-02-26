@@ -117,7 +117,7 @@ function ProductsContent() {
 
         {/* Price Range */}
         <div>
-          <h3 className="font-bold text-slate-800 mb-3 text-sm">نطاق السعر (ل.س)</h3>
+          <h3 className="font-bold text-slate-800 mb-3 text-sm">نطاق السعر ($)</h3>
           <div className="flex gap-2 mb-2">
             <input
               type="number" placeholder="من" value={minPriceInput}

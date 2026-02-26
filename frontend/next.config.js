@@ -13,6 +13,11 @@ const nextConfig = {
         hostname: '**',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co',
+        pathname: '/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
   },

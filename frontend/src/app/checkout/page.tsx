@@ -25,7 +25,7 @@ export default function CheckoutPage() {
   const [payment, setPayment] = useState<PaymentMethod>('cash_on_delivery');
 
   const subtotal = total();
-  const shipping = subtotal > 500000 ? 0 : 25000;
+  const shipping = subtotal > 500 ? 0 : 25;
   const finalTotal = subtotal + shipping;
 
   if (items.length === 0) return (

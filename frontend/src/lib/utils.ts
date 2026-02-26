@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatPrice(price: number, currency = 'ل.س'): string {
-  return `${price.toLocaleString('ar-SY')} ${currency}`;
+export function formatPrice(price: number, currency = '$'): string {
+  return `${price.toLocaleString('en-US')} ${currency}`;
 }
 
 export function calcDiscount(original: number, sale: number): number {

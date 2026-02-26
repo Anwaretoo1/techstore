@@ -157,11 +157,11 @@ export default function NewProductPage() {
           <h2 className="font-semibold text-slate-700 pb-2 border-b border-slate-100">السعر والمخزون</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">السعر (ل.س) *</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">السعر ($) *</label>
               <input name="price" type="number" value={form.price} onChange={handleChange} required min="0" className="input-field" placeholder="0" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">سعر الخصم (ل.س)</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">سعر الخصم ($)</label>
               <input name="sale_price" type="number" value={form.sale_price} onChange={handleChange} min="0" className="input-field" placeholder="اختياري" />
             </div>
             <div>

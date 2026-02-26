@@ -46,7 +46,7 @@ export default function Header() {
       <header className={`sticky top-0 z-40 bg-white transition-shadow duration-200 ${scrolled ? 'shadow-md' : 'border-b border-slate-200'}`}>
         {/* Top Bar */}
         <div className="bg-primary-700 text-white text-xs py-1.5 text-center">
-          <span>شحن مجاني للطلبات فوق 500,000 ل.س | الدفع عند الاستلام متاح</span>
+          <span>شحن مجاني للطلبات فوق 500 $ | الدفع عند الاستلام متاح</span>
         </div>
 
         {/* Main Header */}
