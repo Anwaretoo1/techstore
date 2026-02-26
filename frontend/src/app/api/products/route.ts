@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(p.get('limit') || '12');
     const featured = p.get('featured');
     const sale = p.get('sale');
+    const tag = p.get('tag');
     const offset = (page - 1) * limit;
 
     const conditions: string[] = ['p.is_active = true'];
@@ -44,6 +45,7 @@ export async function GET(req: NextRequest) {
     if (maxPrice) { conditions.push(`COALESCE(p.sale_price, p.price) <= $${idx++}`); params.push(parseFloat(maxPrice)); }
     if (featured === 'true') conditions.push('p.is_featured = true');
     if (sale === 'true') conditions.push('p.sale_price IS NOT NULL AND p.sale_price < p.price');
+    if (tag) { conditions.push(`p.tags::jsonb @> $${idx++}::jsonb`); params.push(JSON.stringify([tag])); }
 
     const where = `WHERE ${conditions.join(' AND ')}`;
     const sortMap: Record<string, string> = {

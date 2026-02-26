@@ -89,6 +89,20 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     let idx = 1;
     if (typeof body.is_featured === 'boolean') { fields.push(`is_featured=$${idx++}`); values.push(body.is_featured); }
     if (typeof body.is_active === 'boolean')   { fields.push(`is_active=$${idx++}`);   values.push(body.is_active); }
+
+    // Tag add/remove operations
+    if (body.add_tag || body.remove_tag) {
+      const tagRes = await query('SELECT tags FROM products WHERE id = $1', [params.id]);
+      if (tagRes.rows.length === 0) return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
+      let existingTags: string[] = typeof tagRes.rows[0].tags === 'string'
+        ? JSON.parse(tagRes.rows[0].tags || '[]')
+        : (tagRes.rows[0].tags || []);
+      if (body.add_tag && !existingTags.includes(body.add_tag)) existingTags = [...existingTags, body.add_tag];
+      if (body.remove_tag) existingTags = existingTags.filter((t: string) => t !== body.remove_tag);
+      fields.push(`tags=$${idx++}`);
+      values.push(JSON.stringify(existingTags));
+    }
+
     if (fields.length === 0) return NextResponse.json({ success: false, message: 'No fields' }, { status: 400 });
     fields.push(`updated_at=NOW()`);
     values.push(params.id);

@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiArrowRight, FiStar } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiArrowRight, FiStar, FiLayout } from 'react-icons/fi';
 import { productsApi } from '@/lib/api';
 import { formatPrice } from '@/lib/utils';
 import { toast } from 'react-hot-toast';
@@ -28,6 +28,23 @@ export default function AdminProductsPage() {
   }, [search, page]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
+
+  const handleToggleHero = async (id: number, currentTags: string[]) => {
+    const isHero = currentTags.includes('hero_banner');
+    try {
+      await fetch(`/api/products/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}` },
+        body: JSON.stringify(isHero ? { remove_tag: 'hero_banner' } : { add_tag: 'hero_banner' }),
+      });
+      setProducts((prev) => prev.map((p) => {
+        if (p.id !== id) return p;
+        const tags = isHero ? p.tags.filter((t: string) => t !== 'hero_banner') : [...p.tags, 'hero_banner'];
+        return { ...p, tags };
+      }));
+      toast.success(!isHero ? 'تم تثبيته في البانر الرئيسي' : 'تم إزالته من البانر الرئيسي');
+    } catch { toast.error('فشل تعديل المنتج'); }
+  };
 
   const handleToggleFeatured = async (id: number, current: boolean) => {
     try {
@@ -91,6 +108,7 @@ export default function AdminProductsPage() {
                   <th>المخزون</th>
                   <th>الحالة</th>
                   <th>مميز</th>
+                  <th>بانر</th>
                   <th>الإجراءات</th>
                 </tr>
               </thead>
@@ -98,14 +116,14 @@ export default function AdminProductsPage() {
                 {loading ? (
                   Array(8).fill(0).map((_, i) => (
                     <tr key={i}>
-                      {Array(6).fill(0).map((__, j) => (
+                      {Array(8).fill(0).map((__, j) => (
                         <td key={j}><div className="skeleton h-5 rounded" /></td>
                       ))}
                     </tr>
                   ))
                 ) : products.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-12 text-slate-400">لا توجد منتجات</td>
+                    <td colSpan={8} className="text-center py-12 text-slate-400">لا توجد منتجات</td>
                   </tr>
                 ) : (
                   products.map((p) => {
@@ -152,6 +170,24 @@ export default function AdminProductsPage() {
                           >
                             <FiStar size={16} fill={p.is_featured ? 'currentColor' : 'none'} />
                           </button>
+                        </td>
+                        <td>
+                          {(() => {
+                            const isHero = Array.isArray(p.tags) && p.tags.includes('hero_banner');
+                            return (
+                              <button
+                                onClick={() => handleToggleHero(p.id, p.tags || [])}
+                                title={isHero ? 'إزالة من البانر الرئيسي' : 'تثبيت في البانر الرئيسي'}
+                                className={`p-1.5 rounded-lg transition-colors ${
+                                  isHero
+                                    ? 'text-blue-600 bg-blue-50 hover:bg-blue-100'
+                                    : 'text-slate-300 hover:text-blue-500 hover:bg-blue-50'
+                                }`}
+                              >
+                                <FiLayout size={16} />
+                              </button>
+                            );
+                          })()}
                         </td>
                         <td>
                           <div className="flex items-center gap-2">
