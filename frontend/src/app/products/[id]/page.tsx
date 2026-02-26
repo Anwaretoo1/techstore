@@ -97,6 +97,9 @@ export default function ProductDetailPage() {
                   src={product.images[selectedImage].url}
                   alt={product.images[selectedImage].alt || product.name_ar}
                   className="object-contain p-6 w-full h-full max-h-[500px]"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/placeholder.png';
+                  }}
                 />
               </Zoom>
             ) : (
@@ -118,7 +121,14 @@ export default function ProductDetailPage() {
                   onClick={() => setSelectedImage(i)}
                   className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-colors ${i === selectedImage ? 'border-primary-500' : 'border-transparent'}`}
                 >
-                  <img src={img.url} alt={img.alt || ''} className="object-contain p-1 w-full h-full" />
+                  <img 
+                    src={img.url} 
+                    alt={img.alt || ''} 
+                    className="object-contain p-1 w-full h-full" 
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/placeholder.png';
+                    }}
+                  />
                 </button>
               ))}
             </div>

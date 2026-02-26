@@ -35,6 +35,9 @@ export default function ProductCard({ product }: Props) {
           src={image}
           alt={product.name_ar}
           className="object-contain p-4 group-hover:scale-105 transition-transform duration-300 w-full h-full"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = '/images/placeholder.png';
+          }}
         />
 
         {/* Badges */}
