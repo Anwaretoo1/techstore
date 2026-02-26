@@ -44,11 +44,6 @@ export default function Header() {
   return (
     <>
       <header className={`sticky top-0 z-40 bg-white transition-shadow duration-200 ${scrolled ? 'shadow-md' : 'border-b border-slate-200'}`}>
-        {/* Top Bar */}
-        <div className="bg-primary-700 text-white text-xs py-1.5 text-center">
-          <span>شحن مجاني للطلبات فوق 500 $ | الدفع عند الاستلام متاح</span>
-        </div>
-
         {/* Main Header */}
         <div className="container-main">
           <div className="flex items-center justify-between h-16 gap-4">

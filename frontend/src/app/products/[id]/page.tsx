@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FiShoppingCart, FiStar, FiChevronRight, FiMinus, FiPlus, FiShare2 } from 'react-icons/fi';
 import { productsApi } from '@/lib/api';
@@ -11,8 +10,7 @@ import { formatPrice, calcDiscount } from '@/lib/utils';
 import { toast } from 'react-hot-toast';
 import type { Product } from '@/types';
 import ProductCard from '@/components/product/ProductCard';
-import Zoom from 'react-medium-image-zoom';
-import 'react-medium-image-zoom/dist/styles.css';
+import ImageMagnifier from '@/components/product/ImageMagnifier';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -92,21 +90,16 @@ export default function ProductDetailPage() {
           {/* Main Image */}
           <div className="relative aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-3 flex items-center justify-center">
             {product.images && product.images[selectedImage] ? (
-              <Zoom>
-                <img
-                  src={product.images[selectedImage].url}
-                  alt={product.images[selectedImage].alt || product.name_ar}
-                  className="object-contain p-6 w-full h-full max-h-[500px]"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/images/placeholder.png';
-                  }}
-                />
-              </Zoom>
+              <ImageMagnifier
+                src={product.images[selectedImage].url}
+                alt={product.images[selectedImage].alt || product.name_ar}
+                zoom={5}
+              />
             ) : (
               <div className="flex items-center justify-center h-full text-slate-300 text-5xl">📦</div>
             )}
             {hasDiscount && (
-              <div className="absolute top-4 right-4 pointer-events-none">
+              <div className="absolute top-4 right-4 pointer-events-none z-10">
                 <span className="price-sale-badge text-sm px-3 py-1">{discount}% خصم</span>
               </div>
             )}
