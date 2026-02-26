@@ -7,7 +7,10 @@ import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiArrowRight, FiStar, FiLayout } f
 import { productsApi } from '@/lib/api';
 import { formatPrice } from '@/lib/utils';
 import { toast } from 'react-hot-toast';
+import Cookies from 'js-cookie';
 import type { Product } from '@/types';
+
+const getAuthHeader = () => ({ 'Content-Type': 'application/json', Authorization: `Bearer ${Cookies.get('token') || ''}` });
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -32,30 +35,32 @@ export default function AdminProductsPage() {
   const handleToggleHero = async (id: number, currentTags: string[]) => {
     const isHero = currentTags.includes('hero_banner');
     try {
-      await fetch(`/api/products/${id}`, {
+      const res = await fetch(`/api/products/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}` },
+        headers: getAuthHeader(),
         body: JSON.stringify(isHero ? { remove_tag: 'hero_banner' } : { add_tag: 'hero_banner' }),
       });
+      if (!res.ok) { const d = await res.json(); throw new Error(d.message || 'Server error'); }
       setProducts((prev) => prev.map((p) => {
         if (p.id !== id) return p;
-        const tags = isHero ? p.tags.filter((t: string) => t !== 'hero_banner') : [...p.tags, 'hero_banner'];
+        const tags = isHero ? p.tags.filter((t: string) => t !== 'hero_banner') : [...(p.tags || []), 'hero_banner'];
         return { ...p, tags };
       }));
       toast.success(!isHero ? 'تم تثبيته في البانر الرئيسي' : 'تم إزالته من البانر الرئيسي');
-    } catch { toast.error('فشل تعديل المنتج'); }
+    } catch (err: unknown) { toast.error((err as Error).message || 'فشل تعديل المنتج'); }
   };
 
   const handleToggleFeatured = async (id: number, current: boolean) => {
     try {
-      await fetch(`/api/products/${id}`, {
+      const res = await fetch(`/api/products/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}` },
+        headers: getAuthHeader(),
         body: JSON.stringify({ is_featured: !current }),
       });
+      if (!res.ok) { const d = await res.json(); throw new Error(d.message || 'Server error'); }
       setProducts((prev) => prev.map((p) => p.id === id ? { ...p, is_featured: !current } : p));
       toast.success(!current ? 'تم تثبيت المنتج في الصفحة الرئيسية' : 'تم إلغاء تثبيت المنتج');
-    } catch { toast.error('فشل تعديل المنتج'); }
+    } catch (err: unknown) { toast.error((err as Error).message || 'فشل تعديل المنتج'); }
   };
 
   const handleDelete = async (id: number, name: string) => {
