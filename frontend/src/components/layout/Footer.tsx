@@ -57,7 +57,6 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               {[
                 { href: '/contact', label: 'تواصل معنا' },
-                { href: '/account/orders', label: 'تتبع طلبك' },
                 { href: '/faq', label: 'الأسئلة الشائعة' },
                 { href: '/privacy', label: 'سياسة الخصوصية' },
                 { href: '/terms', label: 'شروط الاستخدام' },
@@ -93,7 +92,7 @@ export default function Footer() {
       {/* Payment Methods Bar */}
       <div className="border-t border-slate-800 py-4">
         <div className="container-main flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <p>طرق الدفع المتاحة: الدفع عند الاستلام | سيريتل كاش | MTN كاش</p>
+          <p>طرق الدفع المتاحة: الدفع عند الاستلام | سيريتل كاش | MTN كاش | شام كاش</p>
           <p>© {year} TechStore Syria. جميع الحقوق محفوظة.</p>
         </div>
       </div>

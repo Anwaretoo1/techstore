@@ -87,7 +87,7 @@ export interface Address {
 
 // ─── Order Types ─────────────────────────────────────────────────────────────
 export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-export type PaymentMethod = 'cash_on_delivery' | 'syriatel_cash' | 'mtn_cash';
+export type PaymentMethod = 'cash_on_delivery' | 'syriatel_cash' | 'mtn_cash' | 'sham_cash';
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
 
 export interface Order {

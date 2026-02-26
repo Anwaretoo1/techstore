@@ -37,6 +37,7 @@ export const PAYMENT_METHOD_LABELS: Record<string, string> = {
   cash_on_delivery: 'الدفع عند الاستلام',
   syriatel_cash:    'سيريتل كاش',
   mtn_cash:         'MTN كاش',
+  sham_cash:        'شام كاش',
 };
 
 export const PAYMENT_STATUS_LABELS: Record<string, string> = {

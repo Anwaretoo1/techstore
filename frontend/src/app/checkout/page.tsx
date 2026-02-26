@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast';
 import Link from 'next/link';
 
 type Step = 'address' | 'payment' | 'review';
-type PaymentMethod = 'cash_on_delivery' | 'syriatel_cash' | 'mtn_cash';
+type PaymentMethod = 'cash_on_delivery' | 'syriatel_cash' | 'mtn_cash' | 'sham_cash';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -203,6 +203,7 @@ export default function CheckoutPage() {
                       {method === 'cash_on_delivery' && <p className="text-xs text-slate-500 mt-0.5">ادفع نقداً عند استلام الطلب</p>}
                       {method === 'syriatel_cash' && <p className="text-xs text-slate-500 mt-0.5">ادفع عبر سيريتل كاش — سيتم التواصل معك</p>}
                       {method === 'mtn_cash' && <p className="text-xs text-slate-500 mt-0.5">ادفع عبر MTN كاش — سيتم التواصل معك</p>}
+                      {method === 'sham_cash' && <p className="text-xs text-slate-500 mt-0.5">ادفع عبر شام كاش — سيتم التواصل معك</p>}
                     </div>
                   </label>
                 ))}
