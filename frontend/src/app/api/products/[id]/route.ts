@@ -80,6 +80,27 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    await requireAdmin(req);
+    const body = await req.json();
+    const fields: string[] = [];
+    const values: unknown[] = [];
+    let idx = 1;
+    if (typeof body.is_featured === 'boolean') { fields.push(`is_featured=$${idx++}`); values.push(body.is_featured); }
+    if (typeof body.is_active === 'boolean')   { fields.push(`is_active=$${idx++}`);   values.push(body.is_active); }
+    if (fields.length === 0) return NextResponse.json({ success: false, message: 'No fields' }, { status: 400 });
+    fields.push(`updated_at=NOW()`);
+    values.push(params.id);
+    await query(`UPDATE products SET ${fields.join(', ')} WHERE id=$${idx}`, values);
+    return NextResponse.json({ success: true });
+  } catch (err: unknown) {
+    const e = err as { status?: number; message?: string };
+    if (e.status) return NextResponse.json({ success: false, message: e.message }, { status: e.status });
+    return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     await requireAdmin(req);

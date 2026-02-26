@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiArrowRight } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiArrowRight, FiStar } from 'react-icons/fi';
 import { productsApi } from '@/lib/api';
 import { formatPrice } from '@/lib/utils';
 import { toast } from 'react-hot-toast';
@@ -28,6 +28,18 @@ export default function AdminProductsPage() {
   }, [search, page]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
+
+  const handleToggleFeatured = async (id: number, current: boolean) => {
+    try {
+      await fetch(`/api/products/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}` },
+        body: JSON.stringify({ is_featured: !current }),
+      });
+      setProducts((prev) => prev.map((p) => p.id === id ? { ...p, is_featured: !current } : p));
+      toast.success(!current ? 'تم تثبيت المنتج في الصفحة الرئيسية' : 'تم إلغاء تثبيت المنتج');
+    } catch { toast.error('فشل تعديل المنتج'); }
+  };
 
   const handleDelete = async (id: number, name: string) => {
     if (!confirm(`هل أنت متأكد من حذف "${name}"؟`)) return;
@@ -78,6 +90,7 @@ export default function AdminProductsPage() {
                   <th>السعر</th>
                   <th>المخزون</th>
                   <th>الحالة</th>
+                  <th>مميز</th>
                   <th>الإجراءات</th>
                 </tr>
               </thead>
@@ -92,7 +105,7 @@ export default function AdminProductsPage() {
                   ))
                 ) : products.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center py-12 text-slate-400">لا توجد منتجات</td>
+                    <td colSpan={7} className="text-center py-12 text-slate-400">لا توجد منتجات</td>
                   </tr>
                 ) : (
                   products.map((p) => {
@@ -126,6 +139,19 @@ export default function AdminProductsPage() {
                           <span className={p.is_active ? 'badge-green' : 'badge-gray'}>
                             {p.is_active ? 'نشط' : 'مخفي'}
                           </span>
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => handleToggleFeatured(p.id, p.is_featured)}
+                            title={p.is_featured ? 'إلغاء التثبيت' : 'تثبيت في الصفحة الرئيسية'}
+                            className={`p-1.5 rounded-lg transition-colors ${
+                              p.is_featured
+                                ? 'text-yellow-500 bg-yellow-50 hover:bg-yellow-100'
+                                : 'text-slate-300 hover:text-yellow-500 hover:bg-yellow-50'
+                            }`}
+                          >
+                            <FiStar size={16} fill={p.is_featured ? 'currentColor' : 'none'} />
+                          </button>
                         </td>
                         <td>
                           <div className="flex items-center gap-2">

@@ -8,6 +8,7 @@ import {
 import { productsApi, categoriesApi } from '@/lib/api';
 import type { Product, Category } from '@/types';
 import HeroBanner from '@/components/home/HeroBanner';
+import FeaturedCarousel from '@/components/home/FeaturedCarousel';
 import ProductCard from '@/components/product/ProductCard';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
@@ -92,12 +93,22 @@ export default function HomePage() {
               عرض الكل
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {loading
-              ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
-              : featured.slice(0, 8).map((p) => <ProductCard key={p.id} product={p} />)
-            }
-          </div>
+
+          {/* Hero Carousel for featured products */}
+          {loading ? (
+            <div className="skeleton rounded-2xl h-80 md:h-[400px] mb-6" />
+          ) : featured.length > 0 ? (
+            <div className="mb-8">
+              <FeaturedCarousel products={featured} />
+            </div>
+          ) : null}
+
+          {/* Featured grid - smaller cards below carousel */}
+          {!loading && featured.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {featured.slice(0, 4).map((p) => <ProductCard key={p.id} product={p} />)}
+            </div>
+          )}
         </section>
 
         {/* Promo Banner */}
