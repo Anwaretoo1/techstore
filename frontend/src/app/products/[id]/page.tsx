@@ -91,7 +91,7 @@ export default function ProductDetailPage() {
         <div>
           {/* Main Image */}
           <div className="relative aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-3 flex items-center justify-center">
-            {product.images[selectedImage] ? (
+            {product.images && product.images[selectedImage] ? (
               <Zoom>
                 <img
                   src={product.images[selectedImage].url}
@@ -110,11 +110,11 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Thumbnails */}
-          {product.images.length > 1 && (
+          {product.images && product.images.length > 1 && (
             <div className="flex gap-2 overflow-x-auto pb-1">
               {product.images.map((img, i) => (
                 <button
-                  key={img.id}
+                  key={img.id || i}
                   onClick={() => setSelectedImage(i)}
                   className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-colors ${i === selectedImage ? 'border-primary-500' : 'border-transparent'}`}
                 >

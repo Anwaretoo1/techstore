@@ -48,7 +48,9 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
             <div className="space-y-3">
               {items.map(({ product, quantity }) => {
                 const price = product.sale_price ?? product.price;
-                const image = product.images.find((i) => i.is_primary)?.url || product.images[0]?.url || '';
+                const image = (product.images && product.images.length > 0)
+                  ? (product.images.find((i) => i.is_primary)?.url || product.images[0]?.url)
+                  : '';
                 return (
                   <div key={product.id} className="flex gap-3 card p-3">
                     <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-100 shrink-0">

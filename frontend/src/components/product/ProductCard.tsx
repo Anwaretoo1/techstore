@@ -12,7 +12,9 @@ interface Props { product: Product; }
 
 export default function ProductCard({ product }: Props) {
   const addItem = useCartStore((s) => s.addItem);
-  const image = product.images.find((i) => i.is_primary)?.url || product.images[0]?.url || '/images/placeholder.png';
+  const image = (product.images && product.images.length > 0) 
+    ? (product.images.find((i) => i.is_primary)?.url || product.images[0]?.url) 
+    : '/images/placeholder.png';
   const price = product.sale_price ?? product.price;
   const hasDiscount = product.sale_price !== null && product.sale_price < product.price;
   const discount = hasDiscount ? calcDiscount(product.price, product.sale_price!) : 0;
