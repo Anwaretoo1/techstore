@@ -56,7 +56,7 @@ export default function CartPage() {
             return (
               <div key={product.id} className="card p-4 flex gap-4">
                 <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-slate-50 shrink-0">
-                  {image && <Image src={image} alt={product.name_ar} fill className="object-contain p-2" />}
+                  {image && <img src={image} alt={product.name_ar} className="object-contain p-2 w-full h-full" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <Link href={`/products/${product.id}`} className="font-semibold text-slate-800 hover:text-primary-600 line-clamp-2 text-sm">

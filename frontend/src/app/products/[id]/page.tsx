@@ -118,7 +118,7 @@ export default function ProductDetailPage() {
                   onClick={() => setSelectedImage(i)}
                   className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-colors ${i === selectedImage ? 'border-primary-500' : 'border-transparent'}`}
                 >
-                  <Image src={img.url} alt={img.alt || ''} fill className="object-contain p-1" />
+                  <img src={img.url} alt={img.alt || ''} className="object-contain p-1 w-full h-full" />
                 </button>
               ))}
             </div>

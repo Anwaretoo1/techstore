@@ -52,7 +52,7 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
                 return (
                   <div key={product.id} className="flex gap-3 card p-3">
                     <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-                      {image && <Image src={image} alt={product.name_ar} fill className="object-contain" />}
+                      {image && <img src={image} alt={product.name_ar} className="object-contain w-full h-full" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-800 line-clamp-2">{product.name_ar}</p>

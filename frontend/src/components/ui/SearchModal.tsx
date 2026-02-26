@@ -82,7 +82,7 @@ export default function SearchModal({ isOpen, onClose }: Props) {
                 className="flex items-center gap-3 p-3 hover:bg-slate-50 transition-colors"
               >
                 <div className="relative w-12 h-12 rounded-lg bg-slate-100 shrink-0 overflow-hidden">
-                  {image && <Image src={image} alt={p.name_ar} fill className="object-contain" />}
+                  {image && <img src={image} alt={p.name_ar} className="object-contain w-full h-full" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-slate-800 truncate">{p.name_ar}</p>
