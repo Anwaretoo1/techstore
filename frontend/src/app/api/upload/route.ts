@@ -10,6 +10,14 @@ cloudinary.config({
 
 export async function POST(req: NextRequest) {
   try {
+    // Check env vars before anything else
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      return NextResponse.json(
+        { success: false, message: 'مفاتيح Cloudinary غير مضبوطة في متغيرات البيئة (Environment Variables). أضف CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET في إعدادات Vercel.' },
+        { status: 503 }
+      );
+    }
+
     await requireAdmin(req);
 
     const formData = await req.formData();
