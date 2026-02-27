@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FiArrowRight, FiPlus, FiTrash2, FiSave, FiImage } from 'react-icons/fi';
+import { FiArrowRight, FiPlus, FiTrash2, FiSave } from 'react-icons/fi';
 import { productsApi, categoriesApi } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import ImageUpload from '@/components/admin/ImageUpload';
 import type { Category, Specification } from '@/types';
 
 interface ImageEntry { url: string; alt: string; }
@@ -114,42 +115,20 @@ export default function NewProductPage() {
               <FiPlus size={14} /> إضافة صورة
             </button>
           </div>
-          <p className="text-xs text-slate-400">الصورة الأولى تكون الصورة الرئيسية. الصق رابط URL مباشر للصورة (jpg, png, webp)</p>
-          {images.map((img, i) => (
-            <div key={i} className="flex gap-3 items-start">
-              <div className="w-12 h-12 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
-                {img.url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={img.url} alt="" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                ) : (
-                  <FiImage size={18} className="text-slate-300" />
-                )}
-              </div>
-              <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2">
-                <div className="md:col-span-2">
-                  <input
-                    value={img.url}
-                    onChange={(e) => updateImage(i, 'url', e.target.value)}
-                    className="input-field text-sm"
-                    placeholder="https://example.com/image.jpg"
-                  />
-                </div>
-                <input
-                  value={img.alt}
-                  onChange={(e) => updateImage(i, 'alt', e.target.value)}
-                  className="input-field text-sm"
-                  placeholder="وصف الصورة (اختياري)"
-                />
-              </div>
-              {i === 0 ? (
-                <span className="text-xs bg-primary-50 text-primary-600 px-2 py-2 rounded-lg shrink-0">رئيسية</span>
-              ) : (
-                <button type="button" onClick={() => removeImage(i)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg shrink-0">
-                  <FiTrash2 size={14} />
-                </button>
-              )}
-            </div>
-          ))}
+          <p className="text-xs text-slate-400">الصورة الأولى تكون الصورة الرئيسية. يمكنك رفع الصورة مباشرة من جهازك أو لصق رابط URL.</p>
+          <div className="space-y-3">
+            {images.map((img, i) => (
+              <ImageUpload
+                key={i}
+                url={img.url}
+                alt={img.alt}
+                onUrlChange={(url) => updateImage(i, 'url', url)}
+                onAltChange={(alt) => updateImage(i, 'alt', alt)}
+                isPrimary={i === 0}
+                onRemove={i > 0 ? () => removeImage(i) : undefined}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Pricing & Stock */}
